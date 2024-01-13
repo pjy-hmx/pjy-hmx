@@ -44,8 +44,11 @@ int main() {
     while(true){
         int nfds = epoll_wait(epfd, events, MAX_EVENTS, -1);
         errif(nfds == -1, "epoll wait error");
-        for(int i = 0; i < nfds; ++i){
-            if(events[i].data.fd == sockfd){        //新客户端连接
+
+        for(int i = 0; i < nfds; ++i)
+        {
+            if(events[i].data.fd == sockfd)
+            {        //新客户端连接
                 struct sockaddr_in clnt_addr;
                 bzero(&clnt_addr, sizeof(clnt_addr));
                 socklen_t clnt_addr_len = sizeof(clnt_addr);
@@ -59,9 +62,12 @@ int main() {
                 ev.events = EPOLLIN | EPOLLET;
                 setnonblocking(clnt_sockfd);
                 epoll_ctl(epfd, EPOLL_CTL_ADD, clnt_sockfd, &ev);
-            } else if(events[i].events & EPOLLIN){      //可读事件
+            } 
+            else if(events[i].events & EPOLLIN)
+            {      //可读事件
                 char buf[READ_BUFFER];
-                while(true){    //由于使用非阻塞IO，读取客户端buffer，一次读取buf大小数据，直到全部读取完毕
+                while(true)
+                {    //由于使用非阻塞IO，读取客户端buffer，一次读取buf大小数据，直到全部读取完毕
                     bzero(&buf, sizeof(buf));
                     ssize_t bytes_read = read(events[i].data.fd, buf, sizeof(buf));
                     if(bytes_read > 0){
@@ -79,7 +85,9 @@ int main() {
                         break;
                     }
                 }
-            } else{         //其他事件，之后的版本实现
+            } 
+            else
+            {         //其他事件，之后的版本实现
                 printf("something else happened\n");
             }
         }

@@ -1,2 +1,1 @@
-所有内容都来自 30dayMakeCppServer 
-我只是想照着这个自己写一份锻炼能力，无意冒犯
+record some words --2024.1.15
